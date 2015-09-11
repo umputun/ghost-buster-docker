@@ -4,7 +4,7 @@ ghost-buster:
   container_name: ghost-buster
 
   environment:
-   - BLOG_DOMAIN=http://p.umputun.com
+   - BLOG_DOMAIN=http://p.umputun.com <<-- EDIT THIS
    - NODE_ENV=production
 
   ports:
