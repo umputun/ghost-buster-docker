@@ -5,11 +5,12 @@ RUN \
   easy_install pip
 
 # Install Ghost
+ENV GHOST_VERSION 0.7.0
 RUN \
   cd /tmp && \
-  wget https://ghost.org/zip/ghost-latest.zip && \
-  unzip ghost-latest.zip -d /ghost && \
-  rm -f ghost-latest.zip && \
+  curl -sSL "https://ghost.org/archives/ghost-${GHOST_VERSION}.zip" -o ghost.zip && \
+  unzip ghost.zip -d /ghost && \
+  rm -f ghost.zip && \
   echo "unzip completed"
 
 RUN \
