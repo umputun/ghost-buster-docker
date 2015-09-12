@@ -1,7 +1,7 @@
 FROM node:0.12
 
 RUN \
-  apt-get update && apt-get install unzip python-setuptools python-dev libxml2-dev libxslt-dev nginx -yq && \
+  apt-get update && apt-get install unzip python-setuptools python-dev libxml2-dev libxslt-dev -yq && \
   easy_install pip
 
 # Install Ghost
