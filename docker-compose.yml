@@ -1,5 +1,5 @@
 ghost-buster:
-  build: build/ghost-buster
+  image: umputun/ghost-buster-docker
   restart: always
   container_name: ghost-buster
 
