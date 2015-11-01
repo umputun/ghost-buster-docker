@@ -5,7 +5,7 @@ RUN \
   easy_install pip
 
 # Install Ghost
-ENV GHOST_VERSION 0.7.0
+ENV GHOST_VERSION 0.7.1
 RUN \
   cd /tmp && \
   curl -sSL "https://ghost.org/archives/ghost-${GHOST_VERSION}.zip" -o ghost.zip && \
