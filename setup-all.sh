@@ -16,6 +16,6 @@ echo "build container"
 docker-compose build
 
 echo "start ghost and nginx"
-docker-compose up
+docker-compose up -d
 
 echo "all done"
