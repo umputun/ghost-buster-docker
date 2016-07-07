@@ -1,11 +1,10 @@
-ghost-buster:
-  #image: umputun/ghost-buster-docker
+:qghost-buster:
   build: build/ghost-buster
   restart: always
   container_name: ghost-buster
 
   environment:
-   - BLOG_DOMAIN=http://blog.petrenko.me
+   - BLOG_DOMAIN=http://p.umputun.com #<<-- EDIT THIS
    - NODE_ENV=production
 
   ports:

@@ -16,13 +16,13 @@ RUN \
   curl -sSL "https://ghost.org/archives/ghost-${GHOST_VERSION}.zip" -o ghost.zip && \
   unzip ghost.zip -d /ghost && \
   rm -f ghost.zip && \
-  echo "unzip completed" ;
+  echo "unzip completed" ; \
   cd /ghost && \
 #Fixing version of sqlite3
   sed -i.bak 's/  "sqlite3".*/    "sqlite3": "3.1.4",/' package.json ;\
 #finaly installing all that stuff
   npm install --production -d && \
-  npm cache clean && \
+  npm cache clean
 
 
 RUN \

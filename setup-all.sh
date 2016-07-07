@@ -1,14 +1,21 @@
 #!/bin/sh
 
-echo "get and install docker-compose"
-curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > /tmp/docker-compose
-chmod +x /tmp/docker-compose
-sudo mv -f /tmp/docker-compose /usr/local/bin/docker-compose
+
+# Docker compose is apart of Docker
 
 echo "edit params"
 nano docker-compose.yml
 
+# making necessary path and files
+mkdir -p logs
+touch logs/access.log
+touch logs/error.log
+touch logs/ghost-buster.log
+
+echo "build container"
+docker-compose build
+
 echo "start ghost and nginx"
-docker-compose up -d
+docker-compose up
 
 echo "all done"
