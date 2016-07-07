@@ -1,4 +1,4 @@
-:qghost-buster:
+ghost-buster:
   build: build/ghost-buster
   restart: always
   container_name: ghost-buster
