@@ -1,0 +1,5 @@
+data/content/data/*
+data/content/images/*
+export.md/*
+static/*
+logs/*

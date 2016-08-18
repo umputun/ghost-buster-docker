@@ -38,6 +38,7 @@ fi
 sed -i -e "s|http://my-ghost-blog.com|${BLOG_DOMAIN}|g" /ghost/config.js
 
 #start background watcher for buster
+touch /ghost/content/data/ghost.db
 while inotifywait -e modify /ghost/content/data/ghost.db; do sleep 10 && /ghost/publish.sh; done &
 
 # Start Ghost
