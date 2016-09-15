@@ -1,5 +1,4 @@
-data/content/data/*
-data/content/images/*
+data/*
 export.md/*
 static/*
 logs/*
