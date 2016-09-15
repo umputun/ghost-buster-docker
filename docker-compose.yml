@@ -1,5 +1,6 @@
 version: '2'
 services:
+
     ghost-buster:
         image: umputun/ghost-buster-docker
         build: build/ghost-buster
