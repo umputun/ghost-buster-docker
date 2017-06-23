@@ -1,4 +1,10 @@
-#!/bin/bash
+#!/bin/sh
+
+#set TZ
+if [ ! -f "$TZ" ]; then
+  cp /usr/share/zoneinfo/$TZ /etc/localtime && \
+  echo $TZ > /etc/timezone
+fi
 
 GHOST="/ghost"
 OVERRIDE="/ghost-override"

@@ -8,8 +8,9 @@ services:
         container_name: ghost-buster
 
         environment:
-            - BLOG_DOMAIN=http://p.umputun.com #<<-- EDIT THIS
+            - BLOG_DOMAIN=http://${BLOG_DOMAIN}
             - NODE_ENV=production
+            - TZ=${TIME_ZONE}
 
         ports:
             - "2368:2368"
@@ -28,7 +29,17 @@ services:
 
         ports:
             - "80:80"
+            - "443:443"
 
         volumes:
+            - ./etc/ssl:/etc/nginx/ssl
             - ./static:/ghost/static
             - ./logs:/var/log/nginx
+
+        environment:
+            - LETSENCRYPT=true
+            - TZ=${TIME_ZONE}
+            - LE_EMAIL=${EMAIL}
+            - LE_FQDN=${BLOG_DOMAIN}
+            #- SSL_CERT=le-crt.pem
+            #- SSL_KEY=le-key.pem

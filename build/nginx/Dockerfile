@@ -1,18 +1,24 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 # Install nginx
-RUN apk add --update nginx && \
-	rm -rf /var/cache/apk/*
+RUN apk add --update nginx certbot tzdata openssl && \
+    rm -rf /var/cache/apk/*
 
 # Copy proper config
-COPY nginx.conf /etc/nginx/nginx.conf
+ADD conf/nginx.conf /etc/nginx/nginx.conf
+ADD conf/service.conf /etc/nginx/service.conf
+
+ADD script/entrypoint.sh /entrypoint.sh
+ADD script/le.sh /le.sh
+
+RUN \
+ mkdir -p /usr/share/nginx/html && \
+ rm /etc/nginx/conf.d/default.conf && \
+ chmod +x /entrypoint.sh && \
+ chmod +x /le.sh
 
 # Starting nginx in foreground mode
-CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
+CMD ["/entrypoint.sh"]
 
 # Expose the ports for nginx
-EXPOSE 80
-
-#todo:
-#  add 443 port
-#  add let's encrypt certificate and tool https://github.com/xenolf/lego
+EXPOSE 80 443
