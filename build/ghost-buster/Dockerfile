@@ -1,33 +1,36 @@
-FROM alpine:3.4
+FROM alpine:3.6
 
 RUN \
 #major part
-  apk --update --no-progress add nodejs-lts \
+  apk --update --no-progress add nodejs-lts nodejs-npm \
 #system utility
-  unrar bash unzip inotify-tools curl wget\
+  unrar bash unzip inotify-tools curl wget sudo \
 #python and other stuff
   py-setuptools python-dev libxml2-dev libxslt-dev py-pip py-libxslt py-lxml
 
 # Install Ghost
-ENV GHOST_VERSION 0.8.0
+ENV GHOST_CLI_VERSION 1.1.3
+ENV GHOST_VERSION 1.14.0
+ENV GHOST_EXPORT_VERSION 2.0.0
+ENV DEFAULT_BLOG_DOMAIN http://my-ghost-blog.com
 
 RUN \
-  cd /tmp && \
-  curl -sSL "https://ghost.org/archives/ghost-${GHOST_VERSION}.zip" -o ghost.zip && \
-  unzip ghost.zip -d /ghost && \
-  rm -f ghost.zip && \
-  echo "unzip completed" ; \
-  cd /ghost && \
-#Fixing version of sqlite3
-  sed -i.bak 's/  "sqlite3".*/    "sqlite3": "3.1.4",/' package.json ;\
-#finaly installing all that stuff
-  npm install --production -d && \
-  npm cache clean
-
-
-RUN \
-  sed 's/127.0.0.1/0.0.0.0/' /ghost/config.example.js > /ghost/config.js && \
   adduser ghost -D -h /ghost -u 987
+RUN \
+  cd /ghost && \
+  npm install -g ghost-cli@${GHOST_CLI_VERSION} && \
+  ghost install \
+    --no-start --no-stack \
+    --version=${GHOST_VERSION} \
+    --url=${DEFAULT_BLOG_DOMAIN} \
+    --process=local --no-setup-nginx --no-setup-systemd \
+    --db=sqlite3 --dbpath=./content/data/ghost.db && \
+  /usr/lib/node_modules/ghost-cli/node_modules/.bin/yarn cache clean && \
+  cd current && npm prune --production && cd .. && \
+  npm cache clean --force
+
+RUN \
+  sed -i.bak 's/127.0.0.1/0.0.0.0/' /ghost/config.production.json
 
 #install buster
 RUN \
@@ -35,18 +38,8 @@ RUN \
 
 #install md exporter
 RUN \
-  cd /ghost && \
-#Downloading git snapshot because of sqlite3 version problem
-  curl -sSL https://github.com/brianokeefe/ghost-export/archive/master.zip -o gexport.zip && \
-  unzip gexport.zip && \
-  cd /ghost/ghost-export-master && \
-#Fixing version of sqlite3
-  sed -i.bak 's/  "sqlite3".*/    "sqlite3": "3.1.4"/' package.json  && \
-  npm install --production -d -g && \
-#clean up all the stuff
-  npm cache clean && \
-  cd /ghost && \
-  rm -Rf gexport.zip /ghost/ghost-export-master
+  npm install -g ghost-export@${GHOST_EXPORT_VERSION} && \
+  npm cache clean --force
 
 ADD start.bash /ghost-start
 ADD publish.sh /ghost/publish.sh
