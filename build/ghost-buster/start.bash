@@ -48,7 +48,7 @@ touch /ghost/content/data/ghost.db
 while inotifywait -e modify /ghost/content/data/ghost.db; do sleep 10 && /ghost/publish.sh; done &
 
 # Start Ghost
-chown -R ghost:ghost /data /ghost /ghost-override
+chown -R ghost:ghost /data /ghost/content /ghost-override
 su ghost << EOF
 cd "$GHOST"
 ghost run
